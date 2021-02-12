@@ -1,0 +1,6 @@
+[dev]
+address = "localhost"
+port = 8000
+
+[global.databases]
+rchdb = { url = "postgres://rch:rch@localhost/rch" }

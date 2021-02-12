@@ -1,0 +1,33 @@
+#[macro_use]
+extern crate diesel;
+extern crate dotenv;
+extern crate serde_derive;
+extern crate serde;
+
+pub mod models;
+pub mod schema;
+
+use diesel::prelude::*;
+use diesel::pg::PgConnection;
+use self::models::{Thread,NewThread};
+use schema::threads;
+
+
+pub fn list(conn: &PgConnection) -> QueryResult<Vec<Thread>> {
+    threads::table.load::<Thread>(conn)
+}
+
+pub fn new(thread: Thread, conn: &PgConnection ) -> QueryResult<Thread> {
+    diesel::insert_into(threads::table)
+    .values(&NewThread::from_thread(thread))
+    .get_result(conn)
+}
+
+pub fn get(id: i32, conn: &PgConnection) -> QueryResult<Thread> {
+    threads::table.find(id).get_result::<Thread>(conn)
+}
+
+pub fn delete(id: i32, conn: &PgConnection) -> QueryResult<usize> {
+    diesel::delete(threads::table.find(id))
+    .execute(conn)
+}
