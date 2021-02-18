@@ -1,6 +1,6 @@
 use super::schema::threads;
 use chrono::NaiveDateTime;
-use serde::{Serialize,Deserialize};
+use serde::{Deserialize, Serialize};
 
 #[derive(Queryable, AsChangeset, Serialize, Deserialize)]
 pub struct Thread {
@@ -14,9 +14,9 @@ pub struct Thread {
 }
 
 #[derive(Deserialize, Insertable)]
-#[table_name="threads"]
+#[table_name = "threads"]
 pub struct NewThread {
     pub title: Option<String>,
     pub content: String,
-    pub parent: Option<i32>
+    pub parent: Option<i32>,
 }
