@@ -23,6 +23,6 @@ jobs:
         with:
           command: test
       - name: cargo build
-        user: actions-rs/cargo@v1
+        uses: actions-rs/cargo@v1
         with:
           command: build
