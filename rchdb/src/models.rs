@@ -13,20 +13,10 @@ pub struct Thread {
     pub locked: bool,
 }
 
-#[derive(Insertable)]
+#[derive(Deserialize, Insertable)]
 #[table_name="threads"]
 pub struct NewThread {
     pub title: Option<String>,
     pub content: String,
     pub parent: Option<i32>
-}
-
-impl NewThread {
-    pub fn from_thread(thread: Thread) -> NewThread {
-        NewThread {
-            title: thread.title,
-            content: thread.content,
-            parent: thread.parent
-        }
-    }
 }

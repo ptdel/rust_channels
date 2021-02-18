@@ -1,7 +1,7 @@
 use rocket::response::status::{Created,NoContent};
 use diesel::result::Error;
 use rchdb::{list,get,new,delete};
-use rchdb::models::{Thread};
+use rchdb::models::{Thread,NewThread};
 use rocket_contrib::json::{Json};
 use crate::DbConn;
 
@@ -21,7 +21,7 @@ pub fn get_thread(id: i32, conn: DbConn) -> Result<Json<Thread>, Error> {
 }
 
 #[post("/", format = "application/json", data = "<thread>")]
-pub fn new_thread(thread: Json<Thread>, conn: DbConn) -> Result<Created<Json<Thread>>, Error> {
+pub fn new_thread(thread: Json<NewThread>, conn: DbConn) -> Result<Created<Json<Thread>>, Error> {
     new(thread.into_inner(), &conn)
         .map(|person|
             Created(
