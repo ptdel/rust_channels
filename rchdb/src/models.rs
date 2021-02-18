@@ -1,5 +1,5 @@
-use chrono::NaiveDateTime;
 use super::schema::threads;
+use chrono::NaiveDateTime;
 use serde::{Serialize,Deserialize};
 
 #[derive(Queryable, AsChangeset, Serialize, Deserialize)]

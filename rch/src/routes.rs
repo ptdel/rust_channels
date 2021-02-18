@@ -1,9 +1,9 @@
-use rocket::response::status::{Created,NoContent};
+use crate::DbConn;
 use diesel::result::Error;
 use rchdb::{list,get,new,delete};
 use rchdb::models::{Thread,NewThread};
+use rocket::response::status::{Created,NoContent};
 use rocket_contrib::json::{Json};
-use crate::DbConn;
 
 
 #[get("/")]

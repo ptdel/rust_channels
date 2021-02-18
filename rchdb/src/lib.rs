@@ -1,16 +1,16 @@
 #[macro_use]
 extern crate diesel;
 extern crate dotenv;
-extern crate serde_derive;
 extern crate serde;
+extern crate serde_derive;
 
 pub mod models;
 pub mod schema;
 
 use diesel::prelude::*;
 use diesel::pg::PgConnection;
-use self::models::{Thread,NewThread};
 use schema::threads;
+use self::models::{Thread,NewThread};
 
 
 pub fn list(conn: &PgConnection) -> QueryResult<Vec<Thread>> {

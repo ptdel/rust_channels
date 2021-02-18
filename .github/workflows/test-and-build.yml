@@ -1,0 +1,26 @@
+on:
+  push:
+    branches: *
+  pull_request:
+    branches: *
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test-and-build:
+    name: Test and Build Code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+      - name: cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+      - name: cargo build
+        user: actions-rs/cargo@v1
+        with:
+          command: build
