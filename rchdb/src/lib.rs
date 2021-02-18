@@ -17,9 +17,9 @@ pub fn list(conn: &PgConnection) -> QueryResult<Vec<Thread>> {
     threads::table.load::<Thread>(conn)
 }
 
-pub fn new(thread: Thread, conn: &PgConnection ) -> QueryResult<Thread> {
+pub fn new(thread: NewThread, conn: &PgConnection ) -> QueryResult<Thread> {
     diesel::insert_into(threads::table)
-    .values(&NewThread::from_thread(thread))
+    .values(thread)
     .get_result(conn)
 }
 
