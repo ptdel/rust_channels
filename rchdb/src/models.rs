@@ -18,6 +18,7 @@ pub struct Thread {
 pub struct NewThread {
     pub title: Option<String>,
     pub content: String,
+    pub parent: Option<i32>
 }
 
 impl NewThread {
@@ -25,6 +26,7 @@ impl NewThread {
         NewThread {
             title: thread.title,
             content: thread.content,
+            parent: thread.parent
         }
     }
 }

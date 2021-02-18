@@ -14,6 +14,8 @@ fn main() {
         .mount("/", routes![
             routes::list_threads,
             routes::get_thread,
+            routes::new_thread,
+            routes::delete_thread,
         ])
         .launch();
 }
