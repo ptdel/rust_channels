@@ -6,6 +6,7 @@ extern crate rocket;
 extern crate rocket_contrib;
 
 mod routes;
+mod partials;
 
 #[database("rchdb")]
 pub struct DbConn(diesel::PgConnection);
@@ -16,10 +17,11 @@ fn main() {
         .mount(
             "/",
             routes![
-                routes::list_threads,
-                routes::get_thread,
-                routes::new_thread,
-                routes::delete_thread,
+                routes::tmpl_list_threads,
+                routes::api_list_threads,
+                routes::api_get_thread,
+                routes::api_new_thread,
+                routes::api_delete_thread,
             ],
         )
         .launch();
