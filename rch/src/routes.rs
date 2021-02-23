@@ -1,8 +1,8 @@
 use crate::DbConn;
 use crate::partials::page;
 use diesel::result::Error;
-use rchdb::models::{NewThread, Thread};
-use rchdb::{delete, get, list, new};
+use rchdb::models::{NewThread, NewReply, Thread, Reply};
+use rchdb::{delete, get, list, new, reply, get_replies};
 use rocket::response::status::{Created, NoContent};
 use rocket_contrib::json::Json;
 use maud::{html, Markup};
@@ -15,20 +15,34 @@ pub fn tmpl_list_threads(conn: DbConn) -> Markup {
         table {
             @for thread in &threads {
                 tr {
-                    td {
-                        @match &thread.title {
-                            Some(title) => (title),
-                            None => "",
-                        }
-                    }
                     td { (thread.id) }
-                    td { (thread.content) }
+                    td { (thread.title.as_ref().unwrap_or(&"".to_string())) }
                 }
             }
         }
     })
 }
 
+#[get("/<id>")]
+pub fn tmpl_show_thread(id: i32, conn: DbConn) -> Markup {
+    let thread = get(id, &conn).unwrap();
+    let title = thread.title.unwrap_or("".to_string());
+    let replies = get_replies(id, &conn).unwrap();
+    page(&title ,html! {
+        table {
+            tr {
+                td { (thread.id) }
+                td { (title) }
+            }
+            @for reply in &replies {
+                tr {
+                    td { (reply.id) }
+                    td { (reply.content) }
+                }
+            }
+        }
+    })
+}
 
 // API routes
 
@@ -42,10 +56,23 @@ pub fn api_get_thread(id: i32, conn: DbConn) -> Result<Json<Thread>, Error> {
     get(id, &conn).map(Json).map_err(|err| err)
 }
 
-#[post("/api", format = "application/json", data = "<thread>")]
-pub fn api_new_thread(thread: Json<NewThread>, conn: DbConn) -> Result<Created<Json<Thread>>, Error> {
-    new(thread.into_inner(), &conn)
-        .map(|person| Created(format!("/people/{id}", id = person.id), Some(Json(person))))
+#[get("/api/thread/<id>")]
+pub fn api_get_replies(id: i32, conn: DbConn) -> Result<Json<Vec<Reply>>, Error> {
+    get_replies(id, &conn).map(Json).map_err(|err| err)
+}
+
+#[post("/api", format = "application/json", data = "<new_thread>")]
+pub fn api_new_thread(new_thread: Json<NewThread>, conn: DbConn) -> Result<Created<Json<Thread>>, Error> {
+    new(new_thread.into_inner(), &conn)
+        .map(|thread| Created(format!("/thread/{id}", id = thread.id), Some(Json(thread))))
+        .map_err(|err| err)
+}
+
+#[post("/api/<id>", format = "application/json", data = "<new_reply>")]
+pub fn api_new_reply(id: i32, new_reply: Json<NewReply>, conn: DbConn) -> Result<Created<Json<Reply>>, Error> {
+    let input = NewReply { thread_id: Some(id), ..new_reply.into_inner() };
+    reply(input, &conn)
+        .map(|reply| Created(format!("/reply/{id}", id = reply.id), Some(Json(reply))))
         .map_err(|err| err)
 }
 
