@@ -5,6 +5,7 @@ extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
 
+mod partials;
 mod routes;
 
 #[database("rchdb")]
@@ -18,8 +19,11 @@ fn main() {
             routes![
                 routes::list_threads,
                 routes::get_thread,
-                routes::new_thread,
-                routes::delete_thread,
+                routes::api_list_threads,
+                routes::api_get_thread,
+                routes::api_new_thread,
+                routes::api_new_reply,
+                routes::api_delete_thread,
             ],
         )
         .launch();
