@@ -20,7 +20,4 @@ table! {
 
 joinable!(replies -> threads (thread_id));
 
-allow_tables_to_appear_in_same_query!(
-    replies,
-    threads,
-);
+allow_tables_to_appear_in_same_query!(replies, threads,);

@@ -7,10 +7,10 @@ extern crate serde_derive;
 pub mod models;
 pub mod schema;
 
-use self::models::{NewThread, NewReply, Reply, Thread};
+use self::models::{NewReply, NewThread, Reply, Thread};
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
-use schema::{threads,replies};
+use schema::{replies, threads};
 
 pub fn list(conn: &PgConnection) -> QueryResult<Vec<Thread>> {
     threads::table.load::<Thread>(conn)
@@ -28,7 +28,7 @@ pub fn reply(reply: NewReply, conn: &PgConnection) -> QueryResult<Reply> {
         .get_result(conn)
 }
 
-pub fn get(id: i32, conn: &PgConnection) -> QueryResult<(Thread,Vec<Reply>)> {
+pub fn get(id: i32, conn: &PgConnection) -> QueryResult<(Thread, Vec<Reply>)> {
     let thread = threads::table.find(id).get_result::<Thread>(conn)?;
     let replies = Reply::belonging_to(&thread).load::<Reply>(conn)?;
     Ok((thread, replies))

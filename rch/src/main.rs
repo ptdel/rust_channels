@@ -5,8 +5,8 @@ extern crate rocket;
 #[macro_use]
 extern crate rocket_contrib;
 
-mod routes;
 mod partials;
+mod routes;
 
 #[database("rchdb")]
 pub struct DbConn(diesel::PgConnection);

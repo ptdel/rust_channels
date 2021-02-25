@@ -1,4 +1,4 @@
-use super::schema::{threads,replies};
+use super::schema::{replies, threads};
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
@@ -13,7 +13,7 @@ pub struct Thread {
 }
 
 #[derive(Identifiable, Associations, Queryable, Serialize, Deserialize)]
-#[belongs_to(parent="Thread")]
+#[belongs_to(parent = "Thread")]
 #[table_name = "replies"]
 pub struct Reply {
     pub id: i32,
