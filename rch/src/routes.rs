@@ -9,7 +9,7 @@ use maud::{html, Markup};
 
 // Template Routes
 #[get("/")]
-pub fn tmpl_list_threads(conn: DbConn) -> Markup {
+pub fn list_threads(conn: DbConn) -> Markup {
     let threads = list(&conn).unwrap();
     page("OverBoard", html! {
         table {
@@ -24,7 +24,7 @@ pub fn tmpl_list_threads(conn: DbConn) -> Markup {
 }
 
 #[get("/<id>")]
-pub fn tmpl_show_thread(id: i32, conn: DbConn) -> Markup {
+pub fn get_thread(id: i32, conn: DbConn) -> Markup {
     let (thread, replies) = get(id, &conn).unwrap();
     let title = thread.title.unwrap_or("".to_string());
     page(&title ,html! {
