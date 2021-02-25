@@ -17,11 +17,10 @@ fn main() {
         .mount(
             "/",
             routes![
-                routes::tmpl_list_threads,
-                routes::tmpl_show_thread,
+                routes::list_threads,
+                routes::get_thread,
                 routes::api_list_threads,
                 routes::api_get_thread,
-                routes::api_get_replies,
                 routes::api_new_thread,
                 routes::api_new_reply,
                 routes::api_delete_thread,

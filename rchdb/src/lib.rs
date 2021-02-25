@@ -28,14 +28,10 @@ pub fn reply(reply: NewReply, conn: &PgConnection) -> QueryResult<Reply> {
         .get_result(conn)
 }
 
-pub fn get(id: i32, conn: &PgConnection) -> QueryResult<Thread> {
-    threads::table.find(id).get_result::<Thread>(conn)
-}
-
-pub fn get_replies(id: i32, conn: &PgConnection) -> QueryResult<Vec<Reply>> {
+pub fn get(id: i32, conn: &PgConnection) -> QueryResult<(Thread,Vec<Reply>)> {
     let thread = threads::table.find(id).get_result::<Thread>(conn)?;
-    Reply::belonging_to(&thread)
-        .load::<Reply>(conn)
+    let replies = Reply::belonging_to(&thread).load::<Reply>(conn)?;
+    Ok((thread, replies))
 }
 
 pub fn delete(id: i32, conn: &PgConnection) -> QueryResult<usize> {

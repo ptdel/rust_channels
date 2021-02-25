@@ -22,14 +22,14 @@ pub struct Reply {
     pub thread_id: i32,
 }
 
-#[derive(Insertable, Deserialize)]
+#[derive(Insertable, Serialize, Deserialize)]
 #[table_name = "threads"]
 pub struct NewThread {
     pub title: Option<String>,
     pub content: String,
 }
 
-#[derive(Insertable, Deserialize)]
+#[derive(Insertable, Serialize, Deserialize)]
 #[table_name = "replies"]
 pub struct NewReply {
     pub content: String,
