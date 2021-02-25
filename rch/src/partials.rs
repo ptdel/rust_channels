@@ -1,4 +1,5 @@
-use maud::{html, Markup, Render, DOCTYPE};
+use maud::{DOCTYPE, html, Markup, Render};
+
 
 fn header(title: &str) -> Markup {
     let css = Css("style.css");

@@ -29,7 +29,7 @@ pub fn list_threads(conn: DbConn) -> Markup {
 #[get("/<id>")]
 pub fn get_thread(id: i32, conn: DbConn) -> Markup {
     let (thread, replies) = get(id, &conn).unwrap();
-    let title = thread.title.unwrap_or("".to_string());
+    let title = thread.title.unwrap_or_else(|| "".to_string());
     page(
         &title,
         html! {
