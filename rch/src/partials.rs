@@ -1,9 +1,12 @@
-use maud::{DOCTYPE, html, Markup};
+
+use maud::{DOCTYPE, html, Markup, Render};
+
 
 fn header(title: &str) -> Markup {
+    let css = Css("style.css");
     html! {
         head {
-            (DOCTYPE) title { (title) }
+             (DOCTYPE) (css) title { (title) }
         }
     }
 }
@@ -22,5 +25,15 @@ pub fn page(title: &str, body: Markup) -> Markup {
         h1 { (title) }
         (body)
         (footer())
+    }
+}
+
+pub struct Css(&'static str);
+
+impl Render for Css {
+    fn render(&self) -> Markup {
+        html! {
+            link rel="stylesheet" type="text/css" href=(self.0);
+        }
     }
 }
